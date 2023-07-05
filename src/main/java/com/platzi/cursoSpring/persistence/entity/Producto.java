@@ -2,6 +2,8 @@ package com.platzi.cursoSpring.persistence.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "productos")
 public class Producto {
@@ -19,6 +21,12 @@ public class Producto {
     @Column(name = "cantidad_stock")
     private Integer cantidadStock;
     private Boolean estado;
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", insertable = false, updatable = false)
+    private Categoria categoria;
+    //@OneToMany(mappedBy = "id_compra")
+    //private List<Compra> compras;
+    // No es necesario enlazar esta tabla ya que no es de mi interes saber en cuantas compras estuvo este producto
 
     public Integer getIdProducto() {
         return idProducto;
