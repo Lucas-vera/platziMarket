@@ -24,9 +24,17 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "id_categoria", insertable = false, updatable = false)
     private Categoria categoria;
+
     //@OneToMany(mappedBy = "id_compra")
     //private List<Compra> compras;
     // No es necesario enlazar esta tabla ya que no es de mi interes saber en cuantas compras estuvo este producto
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 
     public Integer getIdProducto() {
         return idProducto;
