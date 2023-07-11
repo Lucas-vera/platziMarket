@@ -1,19 +1,25 @@
 package com.platzi.cursoSpring.persistence.mapper;
 
-import com.platzi.cursoSpring.domain.Product;
 import com.platzi.cursoSpring.domain.Purchase;
+import com.platzi.cursoSpring.domain.PurchaseItem;
 import com.platzi.cursoSpring.persistence.entity.Compra;
 import com.platzi.cursoSpring.persistence.entity.ComprasProducto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-07-11T12:22:52-0300",
+    date = "2023-07-11T14:22:29-0300",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.1.1.jar, environment: Java 17 (Oracle Corporation)"
 )
+@Component
 public class PurchaseMapperImpl implements PurchaseMapper {
+
+    @Autowired
+    private PurchaseItemMapper purchaseItemMapper;
 
     @Override
     public Purchase toPurchase(Compra compra) {
@@ -31,7 +37,7 @@ public class PurchaseMapperImpl implements PurchaseMapper {
         purchase.setPaymentMethod( compra.getMedioPago() );
         purchase.setComment( compra.getComentario() );
         purchase.setState( compra.getEstado() );
-        purchase.setProducts( comprasProductoListToProductList( compra.getProductos() ) );
+        purchase.setItems( comprasProductoListToPurchaseItemList( compra.getProductos() ) );
 
         return purchase;
     }
@@ -64,52 +70,32 @@ public class PurchaseMapperImpl implements PurchaseMapper {
         compra.setMedioPago( purchase.getPaymentMethod() );
         compra.setComentario( purchase.getComment() );
         compra.setEstado( purchase.getState() );
-        compra.setProductos( productListToComprasProductoList( purchase.getProducts() ) );
+        compra.setProductos( purchaseItemListToComprasProductoList( purchase.getItems() ) );
 
         return compra;
     }
 
-    protected Product comprasProductoToProduct(ComprasProducto comprasProducto) {
-        if ( comprasProducto == null ) {
-            return null;
-        }
-
-        Product product = new Product();
-
-        return product;
-    }
-
-    protected List<Product> comprasProductoListToProductList(List<ComprasProducto> list) {
+    protected List<PurchaseItem> comprasProductoListToPurchaseItemList(List<ComprasProducto> list) {
         if ( list == null ) {
             return null;
         }
 
-        List<Product> list1 = new ArrayList<Product>( list.size() );
+        List<PurchaseItem> list1 = new ArrayList<PurchaseItem>( list.size() );
         for ( ComprasProducto comprasProducto : list ) {
-            list1.add( comprasProductoToProduct( comprasProducto ) );
+            list1.add( purchaseItemMapper.toPurchaseItem( comprasProducto ) );
         }
 
         return list1;
     }
 
-    protected ComprasProducto productToComprasProducto(Product product) {
-        if ( product == null ) {
-            return null;
-        }
-
-        ComprasProducto comprasProducto = new ComprasProducto();
-
-        return comprasProducto;
-    }
-
-    protected List<ComprasProducto> productListToComprasProductoList(List<Product> list) {
+    protected List<ComprasProducto> purchaseItemListToComprasProductoList(List<PurchaseItem> list) {
         if ( list == null ) {
             return null;
         }
 
         List<ComprasProducto> list1 = new ArrayList<ComprasProducto>( list.size() );
-        for ( Product product : list ) {
-            list1.add( productToComprasProducto( product ) );
+        for ( PurchaseItem purchaseItem : list ) {
+            list1.add( purchaseItemMapper.toComprasProducto( purchaseItem ) );
         }
 
         return list1;

@@ -10,7 +10,7 @@ public class Purchase {
     private String paymentMethod;
     private String comment;
     private String state;
-    private List<Product> products;
+    private List<PurchaseItem> items;
 
     public int getPurchaseId() {
         return purchaseId;
@@ -60,11 +60,11 @@ public class Purchase {
         this.state = state;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<PurchaseItem> getItems() {
+        return items;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setItems(List<PurchaseItem> items) {
+        this.items = items;
     }
 }
