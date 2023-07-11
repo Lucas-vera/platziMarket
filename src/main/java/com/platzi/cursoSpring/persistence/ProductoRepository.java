@@ -26,8 +26,8 @@ public class ProductoRepository implements ProductRepository {
     }
     @Override
     public Optional<Product> getProduct(int productId){
-        return Optional.of( mapper.toProduct( productoRepository.findById(productId).get()));
-        //return productoRepository.findById(productId).map(producto -> mapper.toProduct(producto));
+       // return Optional.of( mapper.toProduct( productoRepository.findById(productId).get())); //NO DEJA PASAR EL NULL
+        return productoRepository.findById(productId).map(producto -> mapper.toProduct(producto));
 
     }
     @Override
